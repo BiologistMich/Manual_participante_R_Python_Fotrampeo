@@ -1,0 +1,4 @@
+project:
+  type: default
+  title: "Manual participante"
+  output-dir: docs

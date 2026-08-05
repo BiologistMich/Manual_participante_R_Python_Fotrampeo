@@ -1,0 +1,53 @@
+/* css styles */
+/*===================================CARACTERIZANDO COLOR Y LETRA DE CUERPO DEL SITIO ====================================*/
+@font-face {
+  font-family: 'GothamBlack';
+  src: url('styles/Gotham Black.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GothamMedium';
+  src: url('styles/GothamMedium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ /* LETRA DE LOS ENCABEZADOS DE TÍTULO*/ 
+ h1, h2, h3, h4, h5 {
+    font-family: 'GothamBlack';
+    font-size: 1.2rem !important;
+}
+
+body p {
+  font-family: 'GothamMedium';
+  font-size: 0.95rem !important;
+}
+
+body {
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    text-align: justify;
+}
+
+/*==================================MARCA DE AGUA CON ISOTIPO=================================================*/
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;  /* Ajusta tamaño */
+  height: 600px;
+  /*background-image: url("images/ISO3SF.svg") !important;*/
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.06;  /* Ajusta transparencia */
+  z-index: 0;  /* Detrás del contenido */
+  pointer-events: none;
+} 
