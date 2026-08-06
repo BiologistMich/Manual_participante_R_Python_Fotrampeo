@@ -36,7 +36,7 @@ Este es el manual del participante, donde podrás consultar cada uno de los paso
 
 El objetivo de este manual es que sea interactivo, claro y sea una guía útil para que puedas replicar los códigos con facilidad.
 
-Estamos seguros de que esta guía te ayudará a disfrutar de este proceso sin que programar sea un dolor de cabeza, cuando puede ser muy divertido. Permitirá potencializar tu desarrollo profesional y muy importante, permitirte cumplir con cualquier objetivo que tengas relacionado con la gestión ambiental, monitoreo y/o conservación de la biodiversidad.
+Estamos seguros de que esta guía te ayudará a disfrutar de este proceso sin que programar sea un dolor de cabeza, cuando puede ser muy divertido. Permitirá potencializar tu desarrollo profesional y muy importante, permitirte cumplir con cualquier objetivo que tengas relacionado con la gestión ambiental, monitoreo y/o conservación de la biodiversidad. 
 
 ![](images/buho_programmer.gif){fig-align="center"}
 
@@ -57,7 +57,7 @@ Para confirmar que estás en la consola de Miniforge verás un nombre de entorno
 
 ## Crear un entorno virtual de Python 
 
-Un entorno virtual es un espacio de trabajo independiente y aislado en tu computadora el cual contendrá su propia instalación de Python y sus librerías. Permite la reproducibilidad, evita el conflicto de versiones, facilita la portabilidad y permite no tener instaladas tantas librerías y archivos en tu computadora.
+Un entorno virtual es un espacio de trabajo independiente y aislado en tu computadora el cual contendrá su propia instalación de Python y sus librerías. Permite la reproducibilidad, evita el conflicto de versiones, facilita la portabilidad y permite no tener instaladas tantas librerías y archivos en tu computadora. 
 
 En MiniForge copia y pega los siguientes códigos, primero la línea de creación del entorno y luego la línea de activación. Una vez creado el entorno ya no es necesario volverlo a crear, cuando abras de nuevo MiniForge para un nuevo análisis, sólo ejecuta la segunda línea:
 
