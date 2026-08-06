@@ -89,7 +89,7 @@ python -m speciesnet.scripts.run_model --help
 La ejecución del modelo lo haremos mediante el script "run_model" usando el siguiente comando:
 
 ```python
-python -m speciesnet.scripts.run_model --folders "c:\tu\carpeta\imagenes" --predictions_json "c:\carpeta\salida\nombre_archivo.json" --MEX
+python -m speciesnet.scripts.run_model --folders "c:\tu\carpeta\imagenes" --predictions_json "c:\carpeta\salida\nombre_archivo.json" --country MEX
 
 ```
 Ahora, aquí es muy importante entender los componentes del código donde se definirán las rutas a las carpetas donde se encuentran las fotografías a analizar y la carpeta donde se guardarán los resultados. Al ejecutar el modelo, obtendrás un archivo en formato **.json**
