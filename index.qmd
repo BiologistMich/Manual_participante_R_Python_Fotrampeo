@@ -135,3 +135,125 @@ python -m megadetector.postprocessing.postprocess_batch_results "D:\ruta\ archiv
 
 Una vez generado esto, podremos visualizar los .html por cada grupo clasificado y usar el index.html como un "menú" con la información de todas nuestras identificaciones. Este es un ejemplo de lo que podríamos generar y mostrar para un reporte: [Resumen de análisis fototrampa](https://merry-kelpie-063064.netlify.app)
 
+# ¡EXCELENTE! Hemos logrado automatizar la identificación de especies 🐆
+
+Ahora que hemos logrado ejecutar los modelos de inteligencia artificial para realizar la automatización de la identificación de fauna en nuestras imágenes de fototrampeo, nos queda un paso más, el aprovechar nuestros resultados en formato .json en R y RStudio para crear nuestra base de datos y realizar análisis ecológicos más complejos.
+
+Para esto, ahora usaremos lenguaje R y ya sea que usemos nuestra IDE RStudio o Positron. 
+
+# Leyendo reportes .json en R y RStudio o Positron
+
+El siguiente script, te permitirá: 
+
+- Leer el formato .json
+- Separar las columnas delimitadas por comas
+- Estructurar la base de datos
+- Filtrar los intervalos de confianza
+- Descartar vehículos, personas o fauna que no sea de nuestro interés
+- Generar un gráfico de frecuencias
+
+## Instalación de librerías
+Primero, activamos las librerías a utilizar, si no las tienes instaladas, recuerda que se instalan con: `install.packages("Nombre de la librería)` posteriormente las activamos con `library`
+
+```r
+# Activación de librerías
+
+library(tidyverse) # manejo de bases de datos
+library(jsonlite)  # lectura y aplanamiento de archivos .json
+
+```
+## Lectura de archivo .json
+
+Ahora, asignaremos a un objeto, la ruta donde se encuentra nuestro reporte en formato .json 
+
+```r
+ruta_absoluta <- "resul_JSON/ejercicio_3_chle.json" 
+```
+Y, leeremos el archivo con la librería jsonlite y extraeremos la información de nuestro interés para la base de datos:
+```r
+# 1. Cargar el archivo
+
+rawdata_2 <- jsonlite::read_json(ruta_absoluta, simplifyVector = T) #lectira del archivo
+
+anotaciones <- rawdata_2$predictions |> 
+  dplyr::select(filepath, prediction, prediction_score, prediction_source) # objeto anotaciones que selecciona columnas de interés
+
+View(anotaciones) #observar BDD
+```
+## Estructura de la base de datos y carpintería
+
+Como nuestras columnas vienen separadas por comas, vamos a separar la taxonomía donde cada nivel de clasificación sea una columna, también limpiaremos los nombres de los archivos para tener únicamente el nombre de la foto. Además, filtraremos el intervalo de precisión (score) que sea superior al 30 % para tener datos confiables y no falsos positivos.
+
+```r
+# 2. Limpiar y separar la taxonomía
+# SpeciesNet usa: ID;clase;orden;familia;genero;especie;nombre_comun
+df_ecology <- anotaciones |>  #recuerda que usamos objeto "anotaciones"
+  tidyr::separate(prediction, 
+           into = c("id_taxa", "clase", "orden", "familia", "genero", "especie", "nombre_comun"), 
+           sep = ";", 
+           fill = "right") |> 
+  # Limpiar nombres de archivos para tener solo el nombre de la foto
+  dplyr::mutate(filename = basename(filepath)) |> 
+  # Opcional: Filtrar predicciones de baja confianza (ej. < 30%)
+  dplyr::filter(prediction_score >= 0.30)
+```
+El siguiente paso, será quedarnos únicamente con los datos de fauna o los de nuestro interés particular, realizando carpintería sencilla de bases de datos:
+```r
+#3. Filtrar solamente los datos de fauna
+  df_animales <- df_ecology |> 
+  dplyr::filter_out(nombre_comun %in% c("human","vehicle","blank", "no cv result", "domestic cattle")) |> 
+  dplyr::count(nombre_comun, familia) |> 
+  dplyr::rename(abundancia=n)
+```
+## Graficación de resultados
+
+Finalmente, crearemos un grafico sencillo para conocer cuales son los grupos más frecuentes en nuestro monitoreo:
+```r
+#4. Graficar
+
+grafica_fauna <- ggplot(df_animales, aes(x = reorder(nombre_comun, abundancia), 
+                                        y = abundancia, 
+                                        fill = familia)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +  # Volteamos la gráfica para que los nombres se lean bien
+  scale_fill_viridis_d(option = "mako") + # Colores profesionales y legibles
+  labs(
+    title = "Frecuencia de Detecciones por Especie",
+    subtitle = "Monitoreo de Fauna",
+    x = "Especie (Nombre común)",
+    y = "Número de detecciones",
+    fill = "Familia"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    title = element_text(face = "bold")
+  )
+
+print(grafica_fauna) #ver gráfico
+```
+## Guardar nuestros resultados
+
+Si queremos guardar nuestro gráfico y nuestra base de datos, usamos el siguiente código:
+
+```r
+# Guardar gráfico
+ggsave(plot=grafica_fauna, #objeto que contiene el gráfico
+       filename = "grafs/graf_fauna.png", #ruta de guardado y nombre del archivo
+       width = 12, #medidas deseadas
+       height = 7,  
+       dpi = 600, #esolución
+       bg="white") #fondo blanco
+
+# Guardar base de datos
+library(rio) #usamos la librería rio para exportar fácilmente
+rio::export(df_ecology, "base_fauna_JSON.xlsx")
+```
+
+# ¡FELICIDADES! Has concluido el flujo de trabajo 🦾🤖🐆🦉🐍🧑🏻‍💻☑️
+
+Nos da mucho gusto que nos hayas acompañado en este proceso, tus datos están listos para continuar con análisis ecológicos más complejos y poder compartir resultados preliminares con tus colegas, empresa o academia. Confiamos en que nuestro flujo de trabajo te ayudará a marcar una diferencia en tu desarrollo profesional y contribuirá a tomar decisiones adecuadas para la conservación de la biodiversidad 🤓
+
+# APÓYANOS 🙏🏻
+
+Si te gustó este curso, por favor sígenos en nuestras redes sociales y déjanos un comentario o retroalimentación para mejorar nuestros cursos y hacer que cada vez más personas se interesen en estas herramientas para implementarlas en sus proyectos. Nuestra misión es clara, apoyar a cualquier persona u organización a conservar la biodiversidad desde un enfoque científico y técnico aprovechando las más actuales tecnologías 🌎🌱🦉🤖

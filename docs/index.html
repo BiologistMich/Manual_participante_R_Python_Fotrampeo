@@ -97,6 +97,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#visualización-de-la-salida-de-speciesnet" id="toc-visualización-de-la-salida-de-speciesnet" class="nav-link" data-scroll-target="#visualización-de-la-salida-de-speciesnet">Visualización de la salida de SpeciesNet 🎞️</a></li>
   <li><a href="#organización-de-resultados-en-carpetas" id="toc-organización-de-resultados-en-carpetas" class="nav-link" data-scroll-target="#organización-de-resultados-en-carpetas">Organización de resultados en carpetas 📁</a></li>
+  <li><a href="#excelente-hemos-logrado-automatizar-la-identificación-de-especies" id="toc-excelente-hemos-logrado-automatizar-la-identificación-de-especies" class="nav-link" data-scroll-target="#excelente-hemos-logrado-automatizar-la-identificación-de-especies">¡EXCELENTE! Hemos logrado automatizar la identificación de especies 🐆</a></li>
+  <li><a href="#leyendo-reportes-.json-en-r-y-rstudio-o-positron" id="toc-leyendo-reportes-.json-en-r-y-rstudio-o-positron" class="nav-link" data-scroll-target="#leyendo-reportes-.json-en-r-y-rstudio-o-positron">Leyendo reportes .json en R y RStudio o Positron</a>
+  <ul class="collapse">
+  <li><a href="#instalación-de-librerías" id="toc-instalación-de-librerías" class="nav-link" data-scroll-target="#instalación-de-librerías">Instalación de librerías</a></li>
+  <li><a href="#lectura-de-archivo-.json" id="toc-lectura-de-archivo-.json" class="nav-link" data-scroll-target="#lectura-de-archivo-.json">Lectura de archivo .json</a></li>
+  <li><a href="#estructura-de-la-base-de-datos-y-carpintería" id="toc-estructura-de-la-base-de-datos-y-carpintería" class="nav-link" data-scroll-target="#estructura-de-la-base-de-datos-y-carpintería">Estructura de la base de datos y carpintería</a></li>
+  <li><a href="#graficación-de-resultados" id="toc-graficación-de-resultados" class="nav-link" data-scroll-target="#graficación-de-resultados">Graficación de resultados</a></li>
+  <li><a href="#guardar-nuestros-resultados" id="toc-guardar-nuestros-resultados" class="nav-link" data-scroll-target="#guardar-nuestros-resultados">Guardar nuestros resultados</a></li>
+  </ul></li>
+  <li><a href="#felicidades-has-concluido-el-flujo-de-trabajo" id="toc-felicidades-has-concluido-el-flujo-de-trabajo" class="nav-link" data-scroll-target="#felicidades-has-concluido-el-flujo-de-trabajo">¡FELICIDADES! Has concluido el flujo de trabajo 🦾🤖🐆🦉🐍🧑🏻‍💻☑️</a></li>
+  <li><a href="#apóyanos" id="toc-apóyanos" class="nav-link" data-scroll-target="#apóyanos">APÓYANOS 🙏🏻</a></li>
   </ul>
 </nav>
 </div>
@@ -224,6 +235,115 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>python <span class="op">-</span>m megadetector.postprocessing.postprocess_batch_results <span class="st">"D:</span><span class="ch">\r</span><span class="st">uta</span><span class="er">\</span><span class="st"> archivo </span><span class="ch">\r</span><span class="st">esultado.json"</span> <span class="st">"D:</span><span class="ch">\r</span><span class="st">uta_carpeta_seleccionada</span><span class="er">\</span><span class="st">post-procesamiento"</span> <span class="op">--</span>image_base_dir <span class="st">"D:</span><span class="ch">\r</span><span class="st">uta_carpeta_fotos_originales</span><span class="er">\</span><span class="st">imputs"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Una vez generado esto, podremos visualizar los .html por cada grupo clasificado y usar el index.html como un “menú” con la información de todas nuestras identificaciones. Este es un ejemplo de lo que podríamos generar y mostrar para un reporte: <a href="https://merry-kelpie-063064.netlify.app">Resumen de análisis fototrampa</a></p>
+</section>
+<section id="excelente-hemos-logrado-automatizar-la-identificación-de-especies" class="level1">
+<h1>¡EXCELENTE! Hemos logrado automatizar la identificación de especies 🐆</h1>
+<p>Ahora que hemos logrado ejecutar los modelos de inteligencia artificial para realizar la automatización de la identificación de fauna en nuestras imágenes de fototrampeo, nos queda un paso más, el aprovechar nuestros resultados en formato .json en R y RStudio para crear nuestra base de datos y realizar análisis ecológicos más complejos.</p>
+<p>Para esto, ahora usaremos lenguaje R y ya sea que usemos nuestra IDE RStudio o Positron.</p>
+</section>
+<section id="leyendo-reportes-.json-en-r-y-rstudio-o-positron" class="level1">
+<h1>Leyendo reportes .json en R y RStudio o Positron</h1>
+<p>El siguiente script, te permitirá:</p>
+<ul>
+<li>Leer el formato .json</li>
+<li>Separar las columnas delimitadas por comas</li>
+<li>Estructurar la base de datos</li>
+<li>Filtrar los intervalos de confianza</li>
+<li>Descartar vehículos, personas o fauna que no sea de nuestro interés</li>
+<li>Generar un gráfico de frecuencias</li>
+</ul>
+<section id="instalación-de-librerías" class="level2">
+<h2 class="anchored" data-anchor-id="instalación-de-librerías">Instalación de librerías</h2>
+<p>Primero, activamos las librerías a utilizar, si no las tienes instaladas, recuerda que se instalan con: <code>install.packages("Nombre de la librería)</code> posteriormente las activamos con <code>library</code></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Activación de librerías</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># manejo de bases de datos</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)  <span class="co"># lectura y aplanamiento de archivos .json</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="lectura-de-archivo-.json" class="level2">
+<h2 class="anchored" data-anchor-id="lectura-de-archivo-.json">Lectura de archivo .json</h2>
+<p>Ahora, asignaremos a un objeto, la ruta donde se encuentra nuestro reporte en formato .json</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ruta_absoluta <span class="ot">&lt;-</span> <span class="st">"resul_JSON/ejercicio_3_chle.json"</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Y, leeremos el archivo con la librería jsonlite y extraeremos la información de nuestro interés para la base de datos:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Cargar el archivo</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>rawdata_2 <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">read_json</span>(ruta_absoluta, <span class="at">simplifyVector =</span> T) <span class="co">#lectira del archivo</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>anotaciones <span class="ot">&lt;-</span> rawdata_2<span class="sc">$</span>predictions <span class="sc">|&gt;</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(filepath, prediction, prediction_score, prediction_source) <span class="co"># objeto anotaciones que selecciona columnas de interés</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(anotaciones) <span class="co">#observar BDD</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="estructura-de-la-base-de-datos-y-carpintería" class="level2">
+<h2 class="anchored" data-anchor-id="estructura-de-la-base-de-datos-y-carpintería">Estructura de la base de datos y carpintería</h2>
+<p>Como nuestras columnas vienen separadas por comas, vamos a separar la taxonomía donde cada nivel de clasificación sea una columna, también limpiaremos los nombres de los archivos para tener únicamente el nombre de la foto. Además, filtraremos el intervalo de precisión (score) que sea superior al 30 % para tener datos confiables y no falsos positivos.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Limpiar y separar la taxonomía</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># SpeciesNet usa: ID;clase;orden;familia;genero;especie;nombre_comun</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>df_ecology <span class="ot">&lt;-</span> anotaciones <span class="sc">|&gt;</span>  <span class="co">#recuerda que usamos objeto "anotaciones"</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate</span>(prediction, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"id_taxa"</span>, <span class="st">"clase"</span>, <span class="st">"orden"</span>, <span class="st">"familia"</span>, <span class="st">"genero"</span>, <span class="st">"especie"</span>, <span class="st">"nombre_comun"</span>), </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">sep =</span> <span class="st">";"</span>, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="st">"right"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Limpiar nombres de archivos para tener solo el nombre de la foto</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">filename =</span> <span class="fu">basename</span>(filepath)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Opcional: Filtrar predicciones de baja confianza (ej. &lt; 30%)</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(prediction_score <span class="sc">&gt;=</span> <span class="fl">0.30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El siguiente paso, será quedarnos únicamente con los datos de fauna o los de nuestro interés particular, realizando carpintería sencilla de bases de datos:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#3. Filtrar solamente los datos de fauna</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  df_animales <span class="ot">&lt;-</span> df_ecology <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter_out</span>(nombre_comun <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"human"</span>,<span class="st">"vehicle"</span>,<span class="st">"blank"</span>, <span class="st">"no cv result"</span>, <span class="st">"domestic cattle"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(nombre_comun, familia) <span class="sc">|&gt;</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">abundancia=</span>n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="graficación-de-resultados" class="level2">
+<h2 class="anchored" data-anchor-id="graficación-de-resultados">Graficación de resultados</h2>
+<p>Finalmente, crearemos un grafico sencillo para conocer cuales son los grupos más frecuentes en nuestro monitoreo:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#4. Graficar</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>grafica_fauna <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_animales, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(nombre_comun, abundancia), </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">y =</span> abundancia, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">fill =</span> familia)) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span>  <span class="co"># Volteamos la gráfica para que los nombres se lean bien</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">option =</span> <span class="st">"mako"</span>) <span class="sc">+</span> <span class="co"># Colores profesionales y legibles</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Frecuencia de Detecciones por Especie"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Monitoreo de Fauna"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Especie (Nombre común)"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Número de detecciones"</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Familia"</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(grafica_fauna) <span class="co">#ver gráfico</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="guardar-nuestros-resultados" class="level2">
+<h2 class="anchored" data-anchor-id="guardar-nuestros-resultados">Guardar nuestros resultados</h2>
+<p>Si queremos guardar nuestro gráfico y nuestra base de datos, usamos el siguiente código:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar gráfico</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">plot=</span>grafica_fauna, <span class="co">#objeto que contiene el gráfico</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">filename =</span> <span class="st">"grafs/graf_fauna.png"</span>, <span class="co">#ruta de guardado y nombre del archivo</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">12</span>, <span class="co">#medidas deseadas</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">height =</span> <span class="dv">7</span>,  </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">600</span>, <span class="co">#esolución</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">bg=</span><span class="st">"white"</span>) <span class="co">#fondo blanco</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar base de datos</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rio) <span class="co">#usamos la librería rio para exportar fácilmente</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>rio<span class="sc">::</span><span class="fu">export</span>(df_ecology, <span class="st">"base_fauna_JSON.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="felicidades-has-concluido-el-flujo-de-trabajo" class="level1">
+<h1>¡FELICIDADES! Has concluido el flujo de trabajo 🦾🤖🐆🦉🐍🧑🏻‍💻☑️</h1>
+<p>Nos da mucho gusto que nos hayas acompañado en este proceso, tus datos están listos para continuar con análisis ecológicos más complejos y poder compartir resultados preliminares con tus colegas, empresa o academia. Confiamos en que nuestro flujo de trabajo te ayudará a marcar una diferencia en tu desarrollo profesional y contribuirá a tomar decisiones adecuadas para la conservación de la biodiversidad 🤓</p>
+</section>
+<section id="apóyanos" class="level1">
+<h1>APÓYANOS 🙏🏻</h1>
+<p>Si te gustó este curso, por favor sígenos en nuestras redes sociales y déjanos un comentario o retroalimentación para mejorar nuestros cursos y hacer que cada vez más personas se interesen en estas herramientas para implementarlas en sus proyectos. Nuestra misión es clara, apoyar a cualquier persona u organización a conservar la biodiversidad desde un enfoque científico y técnico aprovechando las más actuales tecnologías 🌎🌱🦉🤖</p>
 </section>
 
 </main>
