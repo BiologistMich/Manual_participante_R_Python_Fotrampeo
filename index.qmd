@@ -98,7 +98,7 @@ Por lo tanto, en la primer ruta, va la dirección a tus fotografías y en la seg
 
 ### Delimitar la región geográfica 🌎
 
-Una **observación muy importante** es asignar el país al cual se va a delimitar la identificación, de lo contrario, puede indentificar a un coyote como un lobo o especies que no pertenecen al país. Para definir el país se usa el código de tres letras [ISO 3166-1 alfa-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) en el caso de México es: `--MEX`
+Una **observación muy importante** es asignar el país al cual se va a delimitar la identificación, de lo contrario, puede indentificar a un coyote como un lobo o especies que no pertenecen al país. Para definir el país se usa el código de tres letras [ISO 3166-1 alfa-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) en el caso de México es: `--country MEX`
 
 Es importante recordar que este proceso se ejecuta en conjunto el clasificador general **Megadetector** el cual se encarga de clasificar por vehículos, personas o animales (incluyendo animales domécticos) y el clasificador específico (las especies) por **SpeciesNet** el cual se encarga de asignar la especie con base en la delimitación geográfica y con sus respectivos porcentajes de precisión.
 
