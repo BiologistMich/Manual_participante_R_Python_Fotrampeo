@@ -35,19 +35,10 @@ body {
 }
 
 /*==================================MARCA DE AGUA CON ISOTIPO=================================================*/
-body::before {
-  content: "";
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;  /* Ajusta tamaño */
-  height: 600px;
-  /*background-image: url("images/ISO3SF.svg") !important;*/
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.06;  /* Ajusta transparencia */
-  z-index: 0;  /* Detrás del contenido */
-  pointer-events: none;
-} 
+/* Libera el TOC para que se mueva junto con el documento */
+#quarto-margin-sidebar {
+  position: relative !important;
+  top: auto !important;
+  height: auto !important;
+  overflow-y: visible !important;
+}

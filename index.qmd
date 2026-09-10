@@ -11,6 +11,7 @@ format:
     toc-title: "Contenido"
     toc-location: left
     toc-expand: true
+    toc-depth: 2
     page-layout: full
     number-sections: false
     css: estilos_manual.css
@@ -22,9 +23,7 @@ editor: visual
 logo: "images/L1.png"
 ---
 
-:::{.column-body-outset}
 ![](images/PORTADA.png){fig-align="center"}
-:::
 
 ## Introducción
 
@@ -42,7 +41,7 @@ Estamos seguros de que esta guía te ayudará a disfrutar de este proceso sin qu
 
 ## Instalación de R y RStudio 🧑🏻‍💻
 
-Primero, es importante tener instalado R que es el lenguaje de programación y RStudio que es la interfaz de edición del código, para esto, puedes consultar este [video de Youtube](https://www.youtube.com/watch?v=D9Bp11iZssc)
+Primero, es importante tener instalado R que es el lenguaje de programación y RStudio que es la interfaz de edición del código, para esto, puedes consultar este [video de Youtube](https://www.youtube.com/watch?v=hbgzW3Cvda4&authuser=0)
 
 
 ## Instalación de Positron 🤖
@@ -256,4 +255,4 @@ Nos da mucho gusto que nos hayas acompañado en este proceso, tus datos están l
 
 # APÓYANOS 🙏🏻
 
-Si te gustó este curso, por favor sígenos en nuestras redes sociales y déjanos un comentario o retroalimentación para mejorar nuestros cursos y hacer que cada vez más personas se interesen en estas herramientas para implementarlas en sus proyectos. Nuestra misión es clara, apoyar a cualquier persona u organización a conservar la biodiversidad desde un enfoque científico y técnico aprovechando las más actuales tecnologías 🌎🌱🦉🤖
+Si te gustó este curso, por favor sígenos en nuestras redes sociales y [déjanos un comentario o retroalimentación](https://senja.io/p/megascops-consultores/r/nLJaHK) para mejorar nuestros cursos y hacer que cada vez más personas se interesen en estas herramientas para implementarlas en sus proyectos. Nuestra misión es clara, apoyar a cualquier persona u organización a conservar la biodiversidad desde un enfoque científico y técnico aprovechando las más actuales tecnologías 🌎🌱🦉🤖
