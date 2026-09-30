@@ -37,8 +37,6 @@ El objetivo de este manual es que sea interactivo, claro y sea una guía útil p
 
 Estamos seguros de que esta guía te ayudará a disfrutar de este proceso sin que programar sea un dolor de cabeza, cuando puede ser muy divertido. Permitirá potencializar tu desarrollo profesional y muy importante, permitirte cumplir con cualquier objetivo que tengas relacionado con la gestión ambiental, monitoreo y/o conservación de la biodiversidad. 
 
-![](images/buho_programmer.gif){fig-align="center"}
-
 ## Instalación de R y RStudio 🧑🏻‍💻
 
 Primero, es importante tener instalado R que es el lenguaje de programación y RStudio que es la interfaz de edición del código, para esto, puedes consultar este [video de Youtube](https://www.youtube.com/watch?v=hbgzW3Cvda4&authuser=0)
@@ -134,7 +132,7 @@ python -m megadetector.postprocessing.postprocess_batch_results "D:\ruta\ archiv
 
 Una vez generado esto, podremos visualizar los .html por cada grupo clasificado y usar el index.html como un "menú" con la información de todas nuestras identificaciones. Este es un ejemplo de lo que podríamos generar y mostrar para un reporte: [Resumen de análisis fototrampa](https://merry-kelpie-063064.netlify.app)
 
-# ¡EXCELENTE! Hemos logrado automatizar la identificación de especies 🐆
+**¡EXCELENTE! Hemos logrado automatizar la identificación de especies 🐆**
 
 Ahora que hemos logrado ejecutar los modelos de inteligencia artificial para realizar la automatización de la identificación de fauna en nuestras imágenes de fototrampeo, nos queda un paso más, el aprovechar nuestros resultados en formato .json en R y RStudio para crear nuestra base de datos y realizar análisis ecológicos más complejos.
 
@@ -172,7 +170,7 @@ Y, leeremos el archivo con la librería jsonlite y extraeremos la información d
 ```r
 # 1. Cargar el archivo
 
-rawdata_2 <- jsonlite::read_json(ruta_absoluta, simplifyVector = T) #lectira del archivo
+rawdata_2 <- jsonlite::read_json(ruta_absoluta, simplifyVector = T) #lectura del archivo
 
 anotaciones <- rawdata_2$predictions |> 
   dplyr::select(filepath, prediction, prediction_score, prediction_source) # objeto anotaciones que selecciona columnas de interés
@@ -249,7 +247,7 @@ library(rio) #usamos la librería rio para exportar fácilmente
 rio::export(df_ecology, "base_fauna_JSON.xlsx")
 ```
 
-# ¡FELICIDADES! Has concluido el flujo de trabajo 🦾🤖🐆🦉🐍🧑🏻‍💻☑️
+**¡FELICIDADES! Has concluido el flujo de trabajo 🦾🤖🐆🦉🐍🧑🏻‍💻☑️**
 
 Nos da mucho gusto que nos hayas acompañado en este proceso, tus datos están listos para continuar con análisis ecológicos más complejos y poder compartir resultados preliminares con tus colegas, empresa o academia. Confiamos en que nuestro flujo de trabajo te ayudará a marcar una diferencia en tu desarrollo profesional y contribuirá a tomar decisiones adecuadas para la conservación de la biodiversidad 🤓
 
