@@ -247,10 +247,209 @@ library(rio) #usamos la librería rio para exportar fácilmente
 rio::export(df_ecology, "base_fauna_JSON.xlsx")
 ```
 
+# FLUJO DE TRABAJO: Ejecución de Mega Detector y Species Net con Positron Y Python 🐍💻
+
+Anteriormente vimos como ejecutar los modelos de Mega Detector y Species Net con Mini Forge. Sin embargo, además de su ejecución, nos interesa mucho ofrecer un flujo de trabajo recomendado y replicable a sus propios proyectos. El uso de Positron es ideal para ete objetivo debido a que integra R y Python al mismo tiempo permitiendo continuar con análisis ecológicos posteriores. 
+
+A diferencia de Mini Forge, en esta ocasión crearemos las carpetas y exportaremos los archivos .json y .html desde positron con librerías nativas de Python. 
+
+## Activación de librerías
+
+```python
+import os
+import sys
+import subprocess
+import json
+# Al seleccionar el entorno virtual de speciesnet, este ya contiene las librerias instaladas
+```
+## Configuración de carpeta raíz y generación de carpetas organizadas
+
+Como vimos durante las sesiones anteriores, recomendamos ampliamentetener nuestras carpetas organizadas de modo de que podamos exportar adecuadamete todos los resultados que ofrece el modelo. Por lo tanto lo haremos con el siguiente código:
+
+```python
+
+print("="*60)
+print("🐾 PROCESAMIENTO CON CARPETAS DE ORIGEN PERSONALIZADAS 📸")
+print("="*60)
+
+# ==============================================================================
+# 🎯 CONFIGURACIÓN (Modifica esto para cada cámara nueva)
+# ==============================================================================
+NOMBRE_CAMARA = "camara_001"  # Nombre para identificar los resultados
+
+# AQUÍ PONES LA RUTA EXACTA DE TUS FOTOS (puede ser cualquier carpeta o disco)
+# Ejemplo en Windows con una 'r' al inicio para evitar problemas con las barras:
+BASE_DIR = r"RUTA\CARPETA\CON_IMAGENES\CAMARA_001"  
+# O por ejemplo: r"E:\Monitoreo\2026\Sitio_Norte"
+
+CARPETA_BRUTO = BASE_DIR # asignamos esa ruta a un objeto (CARPETAB RUTO)
+```
+## Paso 1 - Creación de subcarpetas para exportación de resultados
+
+Una vez definido el directorio base donde se encuentran las fotografías de la cámara "x" podemos crear las subcarpetas si es que no las haz creado. Lo cual recomendamos para evitar errores tipográficos al crear las carpetas manualmente. 
+
+Recomendamos utilizar números seriados en el directorio de tu cámara, esto debido a que solamente tendrás que cambiar el número para replicarlo en cualquier otro proceso.
+
+```python
+# ==============================================================================
+#                  PASO 1: CREACIÓN DE CARPETAS DE SALIDA ESPECÍFICAS
+# ==============================================================================
+# Definir todas las carpetas colgando la misma unidad
+
+CARPETA_JSON  = os.path.join(BASE_DIR, f"2_resultado_JSON_{NOMBRE_CAMARA}")
+CARPETA_IMG   = os.path.join(BASE_DIR, f"3_imagenes_bbox_{NOMBRE_CAMARA}")
+CARPETA_HTML  = os.path.join(BASE_DIR, f"4_visualizacion_web_{NOMBRE_CAMARA}")
+CARPETA_POST  = os.path.join(BASE_DIR, f"5_post_procesamiento_{NOMBRE_CAMARA}")
+
+# Crear carpetas si es que no existen
+for carpeta in [
+    CARPETA_BRUTO,
+    CARPETA_JSON,
+    CARPETA_IMG,
+    CARPETA_HTML,
+    CARPETA_POST,
+]: os.makedirs(carpeta, exist_ok= True)
+
+# definimos ritas absolutas a los archivos:
+ARCHIVO_HTML   = os.path.join(CARPETA_HTML, "resumen_b.html") # nombre de archivo html
+ARCHIVO_JSON = f"{CARPETA_JSON}/resultados_b.json"# nombre de archivo json
+
+print(f"/n📂 Carpetas listas. Asegúrate de poner tus fotos dentro de: '{CARPETA_BRUTO}'")
+```
+## Paso 2 - Ejecución de Mega Detector y Species Net en Positron
+
+Ahora sí, podemos ejecutar el modelo en Positron, la sintaxis es la misma que usamos con Mini Forge, unicamente que las rutas absolutas ya se encuentran almacenadas en los objetos que definimos anteriormente: 
+
+```python
+# ====================================================================================
+#                       PASO 2: EJECUTAR MEGADETECTOR Y SPECIESNET 
+# ====================================================================================
+
+print("\n🤖 [1/3] Analizando imágenes con SpeciesNet...")
+
+# Con subprocess, construimos el comando como una lista. ¡Adiós a los errores de comillas!
+comando_speciesnet = [
+    sys.executable, 
+    "-m", "speciesnet.scripts.run_model",
+    "--folders", CARPETA_BRUTO,
+    "--predictions_json", ARCHIVO_JSON,
+    "--country", "MEX"
+]
+
+# Ejecutamos de forma segura y discreta
+respuesta_ia = subprocess.run(comando_speciesnet)
+
+# subprocess guarda el resultado en ".returncode" (0 significa éxito)
+if respuesta_ia.returncode == 0:
+    print(f"✅ ¡Análisis de IA completado! Datos guardados en: {ARCHIVO_JSON}")
+else:
+    print("❌ Hubo un error al ejecutar SpeciesNet. Revisa los mensajes de arriba.")
+
+```
+## Paso 2.5 - Establecer rutas relativas en archivo JSON
+
+Este paso intermedio es muy importante debido a que para ejecutar en positron la generación de las imágenes con sus cajas delimitadoras y los archivos .html así como las subcarpetas, es necesario cambiar las rutas absolutas del archivo .json generado a rutas relativas, donde solamente se encuentre el nombre del archivo de la imagen. 
+
+Para esto, ejecutamos el siguiente código:
+
+```python
+# ==============================================================================
+#                 PASO INTERMEDIO: Crear un nuevo JSON con rutas relativas
+# ==============================================================================
+
+#1. Abrimos el JSON original del modelo
+with open(ARCHIVO_JSON, "r", encoding="utf-8") as f:
+  datos = json.load(f)
+
+#  Limpiamos la lista principal "images" (que es la que lee MegaDetector para visualizar)
+if "images" in datos:
+  for imagen in datos["images"]:
+    for clave in ["file", "filepath"]:
+      if clave in imagen and imagen[clave]:
+        # Extraemos solo el nombre del archivo
+        imagen[clave] = os.path.basename(imagen[clave])
+
+#  Por si acaso, limpiamos también "predictions" 
+if "predictions" in datos:
+  for item in datos["predictions"]:
+    for clave in ["file", "filepath"]:
+      if clave in item and item[clave]:
+        item[clave] = os.path.basename(item[clave])
+
+# Guardamos el resultado en archivo de rutas relativas (ARCHIVO_JSON_R)
+with open(ARCHIVO_JSON_R, "w", encoding="utf-8") as f:
+  json.dump(datos, f, ensure_ascii=False, indent=4)
+
+print("✅ ¡JSON actualizado y rutas relativas listas en 'images'!")
+
+```
+## Paso 3 - Generación de imágenes con bbox y resumen HTML 
+
+Una vez modificadas las rutas absolutas, utilizaremos el nuevo objeto-archivo generado (`ARCHIVO_JSON_R`) para ejecutar la herramienta de megadetector que genera las imágenes y el resumen html:
+
+```python
+# =======================================================================================
+#                   PASO 3: GENERACIÓN DE IMÁGENES CON BBOX Y HTML
+# =======================================================================================
+print("\n🎨 [2/3] Generando imágenes con recuadros y reporte HTML...")
+
+comando_img_bbox = [
+    sys.executable,
+    "-m", "megadetector.visualization.visualize_detector_output",
+    ARCHIVO_JSON_R,
+    CARPETA_IMG,
+    "--images_dir", CARPETA_BRUTO, 
+    "--html_output_file", ARCHIVO_HTML
+]
+
+# Ejecución de proceso discreto
+respuesta_vis = subprocess.run(comando_img_bbox, capture_output=True, text=True)
+
+# condicionantes para la confirmación
+if respuesta_vis.returncode == 0:
+    print("✅ ¡Imágenes con cajas y archivo HTML generados con éxito!")
+else:
+    print("❌ Error detectado:\n")
+    print(respuesta_vis.stderr)
+
+```
+## Paso 4 - Post - procesamiento para generación de subcarpetas clasificadas y el index en .html
+
+Finalmente, como último paso al igual que con Mini Forge, generaremos las subcarpetas y el index.html con toda la información resumida. Este último bloque de código utiliza todos los objetos definidos anteriormente, así como las rutas de las subcarpetas:
+
+```python
+rint("\n🔍 [3/3] Ejecutando post-procesamiento interactivo...")
+
+comando_post = [
+    sys.executable,
+    "-m", "megadetector.postprocessing.postprocess_batch_results",
+    ARCHIVO_JSON_R,
+    CARPETA_POST,
+    "--image_base_dir", CARPETA_BRUTO
+]
+
+respuesta_post = subprocess.run(comando_post, capture_output=True, text=True)
+
+if respuesta_post.returncode == 0:
+    print("\n" + "="*60)
+    print("🎉 ¡PROCESO COMPLETO FINALIZADO CON ÉXITO! 🎉")
+    print(f"👉 1. Imágenes con cajas guardadas en: {CARPETA_IMG}")
+    print(f"👉 2. Reporte HTML simple en: {ARCHIVO_HTML}")
+    print(f"👉 3. Post-procesamiento interactivo (con su index.html y subcarpetas) en: {CARPETA_POST}")
+    print("="*60)
+else:
+    print("❌ Error en el post-procesamiento:\n", respuesta_post.stderr)
+```
+
 **¡FELICIDADES! Has concluido el flujo de trabajo 🦾🤖🐆🦉🐍🧑🏻‍💻☑️**
 
 Nos da mucho gusto que nos hayas acompañado en este proceso, tus datos están listos para continuar con análisis ecológicos más complejos y poder compartir resultados preliminares con tus colegas, empresa o academia. Confiamos en que nuestro flujo de trabajo te ayudará a marcar una diferencia en tu desarrollo profesional y contribuirá a tomar decisiones adecuadas para la conservación de la biodiversidad 🤓
 
 # APÓYANOS 🙏🏻
 
-Si te gustó este curso, por favor sígenos en nuestras redes sociales y [déjanos un comentario o retroalimentación](https://senja.io/p/megascops-consultores/r/nLJaHK) para mejorar nuestros cursos y hacer que cada vez más personas se interesen en estas herramientas para implementarlas en sus proyectos. Nuestra misión es clara, apoyar a cualquier persona u organización a conservar la biodiversidad desde un enfoque científico y técnico aprovechando las más actuales tecnologías 🌎🌱🦉🤖
+Si te gustó este curso, por favor sígenos en nuestras redes sociales como [LinkedIn](https://www.linkedin.com/in/megascops-consultores-ambientales/) e [Instagram](https://www.instagram.com/megascops_consultores_a?stkn=b3k2anRmbjQ5NXZu&utm_source=qr) y te agradeceríamos muchísimo [dejarnos un comentario o retroalimentación](https://senja.io/p/megascops-consultores/r/nLJaHK)con el objetivo de que podamos mejorar nuestros cursos y hacer que cada vez más personas se interesen en estas herramientas para implementarlas en sus proyectos.☺️ 
+
+Nuestra misión es clara, apoyar a cualquier persona u organización a conservar la biodiversidad desde un enfoque científico y técnico aprovechando las más actuales tecnologías 🌎🌱🦉🤖
+
+
+*Este manual es propiedad de MEGASCOPS Consultores Ambientales y es para uso exclusivo de los participantes inscritos en el curso: Introducción al uso de R y Python para la detección automatizada de fauna en fototrampeo. Queda estrictamente prohibida su comercialización y difusión sin consentimiento o autorización de los autores.*

@@ -102,6 +102,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#graficación-de-resultados" id="toc-graficación-de-resultados" class="nav-link" data-scroll-target="#graficación-de-resultados">Graficación de resultados</a></li>
   <li><a href="#guardar-nuestros-resultados" id="toc-guardar-nuestros-resultados" class="nav-link" data-scroll-target="#guardar-nuestros-resultados">Guardar nuestros resultados</a></li>
   </ul></li>
+  <li><a href="#flujo-de-trabajo-ejecución-de-mega-detector-y-species-net-con-positron-y-python" id="toc-flujo-de-trabajo-ejecución-de-mega-detector-y-species-net-con-positron-y-python" class="nav-link" data-scroll-target="#flujo-de-trabajo-ejecución-de-mega-detector-y-species-net-con-positron-y-python">FLUJO DE TRABAJO: Ejecución de Mega Detector y Species Net con Positron Y Python 🐍💻</a>
+  <ul class="collapse">
+  <li><a href="#activación-de-librerías" id="toc-activación-de-librerías" class="nav-link" data-scroll-target="#activación-de-librerías">Activación de librerías</a></li>
+  <li><a href="#configuración-de-carpeta-raíz-y-generación-de-carpetas-organizadas" id="toc-configuración-de-carpeta-raíz-y-generación-de-carpetas-organizadas" class="nav-link" data-scroll-target="#configuración-de-carpeta-raíz-y-generación-de-carpetas-organizadas">Configuración de carpeta raíz y generación de carpetas organizadas</a></li>
+  <li><a href="#paso-1---creación-de-subcarpetas-para-exportación-de-resultados" id="toc-paso-1---creación-de-subcarpetas-para-exportación-de-resultados" class="nav-link" data-scroll-target="#paso-1---creación-de-subcarpetas-para-exportación-de-resultados">Paso 1 - Creación de subcarpetas para exportación de resultados</a></li>
+  <li><a href="#paso-2---ejecución-de-mega-detector-y-species-net-en-positron" id="toc-paso-2---ejecución-de-mega-detector-y-species-net-en-positron" class="nav-link" data-scroll-target="#paso-2---ejecución-de-mega-detector-y-species-net-en-positron">Paso 2 - Ejecución de Mega Detector y Species Net en Positron</a></li>
+  <li><a href="#paso-2.5---establecer-rutas-relativas-en-archivo-json" id="toc-paso-2.5---establecer-rutas-relativas-en-archivo-json" class="nav-link" data-scroll-target="#paso-2.5---establecer-rutas-relativas-en-archivo-json">Paso 2.5 - Establecer rutas relativas en archivo JSON</a></li>
+  <li><a href="#paso-3---generación-de-imágenes-con-bbox-y-resumen-html" id="toc-paso-3---generación-de-imágenes-con-bbox-y-resumen-html" class="nav-link" data-scroll-target="#paso-3---generación-de-imágenes-con-bbox-y-resumen-html">Paso 3 - Generación de imágenes con bbox y resumen HTML</a></li>
+  <li><a href="#paso-4---post---procesamiento-para-generación-de-subcarpetas-clasificadas-y-el-index-en-.html" id="toc-paso-4---post---procesamiento-para-generación-de-subcarpetas-clasificadas-y-el-index-en-.html" class="nav-link" data-scroll-target="#paso-4---post---procesamiento-para-generación-de-subcarpetas-clasificadas-y-el-index-en-.html">Paso 4 - Post - procesamiento para generación de subcarpetas clasificadas y el index en .html</a></li>
+  </ul></li>
   <li><a href="#apóyanos" id="toc-apóyanos" class="nav-link" data-scroll-target="#apóyanos">APÓYANOS 🙏🏻</a></li>
   </ul>
 </nav>
@@ -321,13 +331,189 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar base de datos</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rio) <span class="co">#usamos la librería rio para exportar fácilmente</span></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>rio<span class="sc">::</span><span class="fu">export</span>(df_ecology, <span class="st">"base_fauna_JSON.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="flujo-de-trabajo-ejecución-de-mega-detector-y-species-net-con-positron-y-python" class="level1">
+<h1>FLUJO DE TRABAJO: Ejecución de Mega Detector y Species Net con Positron Y Python 🐍💻</h1>
+<p>Anteriormente vimos como ejecutar los modelos de Mega Detector y Species Net con Mini Forge. Sin embargo, además de su ejecución, nos interesa mucho ofrecer un flujo de trabajo recomendado y replicable a sus propios proyectos. El uso de Positron es ideal para ete objetivo debido a que integra R y Python al mismo tiempo permitiendo continuar con análisis ecológicos posteriores.</p>
+<p>A diferencia de Mini Forge, en esta ocasión crearemos las carpetas y exportaremos los archivos .json y .html desde positron con librerías nativas de Python.</p>
+<section id="activación-de-librerías" class="level2">
+<h2 class="anchored" data-anchor-id="activación-de-librerías">Activación de librerías</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Al seleccionar el entorno virtual de speciesnet, este ya contiene las librerias instaladas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="configuración-de-carpeta-raíz-y-generación-de-carpetas-organizadas" class="level2">
+<h2 class="anchored" data-anchor-id="configuración-de-carpeta-raíz-y-generación-de-carpetas-organizadas">Configuración de carpeta raíz y generación de carpetas organizadas</h2>
+<p>Como vimos durante las sesiones anteriores, recomendamos ampliamentetener nuestras carpetas organizadas de modo de que podamos exportar adecuadamete todos los resultados que ofrece el modelo. Por lo tanto lo haremos con el siguiente código:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"🐾 PROCESAMIENTO CON CARPETAS DE ORIGEN PERSONALIZADAS 📸"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 🎯 CONFIGURACIÓN (Modifica esto para cada cámara nueva)</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>NOMBRE_CAMARA <span class="op">=</span> <span class="st">"camara_001"</span>  <span class="co"># Nombre para identificar los resultados</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># AQUÍ PONES LA RUTA EXACTA DE TUS FOTOS (puede ser cualquier carpeta o disco)</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejemplo en Windows con una 'r' al inicio para evitar problemas con las barras:</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>BASE_DIR <span class="op">=</span> <span class="vs">r"RUTA</span><span class="er">\</span><span class="vs">CARPETA</span><span class="er">\</span><span class="vs">CON_IMAGENES</span><span class="er">\</span><span class="vs">CAMARA_001"</span>  </span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># O por ejemplo: r"E:\Monitoreo\2026\Sitio_Norte"</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>CARPETA_BRUTO <span class="op">=</span> BASE_DIR <span class="co"># asignamos esa ruta a un objeto (CARPETAB RUTO)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="paso-1---creación-de-subcarpetas-para-exportación-de-resultados" class="level2">
+<h2 class="anchored" data-anchor-id="paso-1---creación-de-subcarpetas-para-exportación-de-resultados">Paso 1 - Creación de subcarpetas para exportación de resultados</h2>
+<p>Una vez definido el directorio base donde se encuentran las fotografías de la cámara “x” podemos crear las subcarpetas si es que no las haz creado. Lo cual recomendamos para evitar errores tipográficos al crear las carpetas manualmente.</p>
+<p>Recomendamos utilizar números seriados en el directorio de tu cámara, esto debido a que solamente tendrás que cambiar el número para replicarlo en cualquier otro proceso.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                  PASO 1: CREACIÓN DE CARPETAS DE SALIDA ESPECÍFICAS</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir todas las carpetas colgando la misma unidad</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>CARPETA_JSON  <span class="op">=</span> os.path.join(BASE_DIR, <span class="ss">f"2_resultado_JSON_</span><span class="sc">{</span>NOMBRE_CAMARA<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>CARPETA_IMG   <span class="op">=</span> os.path.join(BASE_DIR, <span class="ss">f"3_imagenes_bbox_</span><span class="sc">{</span>NOMBRE_CAMARA<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>CARPETA_HTML  <span class="op">=</span> os.path.join(BASE_DIR, <span class="ss">f"4_visualizacion_web_</span><span class="sc">{</span>NOMBRE_CAMARA<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>CARPETA_POST  <span class="op">=</span> os.path.join(BASE_DIR, <span class="ss">f"5_post_procesamiento_</span><span class="sc">{</span>NOMBRE_CAMARA<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear carpetas si es que no existen</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> carpeta <span class="kw">in</span> [</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    CARPETA_BRUTO,</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    CARPETA_JSON,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    CARPETA_IMG,</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    CARPETA_HTML,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    CARPETA_POST,</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>]: os.makedirs(carpeta, exist_ok<span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co"># definimos ritas absolutas a los archivos:</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>ARCHIVO_HTML   <span class="op">=</span> os.path.join(CARPETA_HTML, <span class="st">"resumen_b.html"</span>) <span class="co"># nombre de archivo html</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>ARCHIVO_JSON <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>CARPETA_JSON<span class="sc">}</span><span class="ss">/resultados_b.json"</span><span class="co"># nombre de archivo json</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"/n📂 Carpetas listas. Asegúrate de poner tus fotos dentro de: '</span><span class="sc">{</span>CARPETA_BRUTO<span class="sc">}</span><span class="ss">'"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="paso-2---ejecución-de-mega-detector-y-species-net-en-positron" class="level2">
+<h2 class="anchored" data-anchor-id="paso-2---ejecución-de-mega-detector-y-species-net-en-positron">Paso 2 - Ejecución de Mega Detector y Species Net en Positron</h2>
+<p>Ahora sí, podemos ejecutar el modelo en Positron, la sintaxis es la misma que usamos con Mini Forge, unicamente que las rutas absolutas ya se encuentran almacenadas en los objetos que definimos anteriormente:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ====================================================================================</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                       PASO 2: EJECUTAR MEGADETECTOR Y SPECIESNET </span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ====================================================================================</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🤖 [1/3] Analizando imágenes con SpeciesNet..."</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Con subprocess, construimos el comando como una lista. ¡Adiós a los errores de comillas!</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>comando_speciesnet <span class="op">=</span> [</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    sys.executable, </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"-m"</span>, <span class="st">"speciesnet.scripts.run_model"</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"--folders"</span>, CARPETA_BRUTO,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"--predictions_json"</span>, ARCHIVO_JSON,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"--country"</span>, <span class="st">"MEX"</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejecutamos de forma segura y discreta</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>respuesta_ia <span class="op">=</span> subprocess.run(comando_speciesnet)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co"># subprocess guarda el resultado en ".returncode" (0 significa éxito)</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> respuesta_ia.returncode <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"✅ ¡Análisis de IA completado! Datos guardados en: </span><span class="sc">{</span>ARCHIVO_JSON<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"❌ Hubo un error al ejecutar SpeciesNet. Revisa los mensajes de arriba."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="paso-2.5---establecer-rutas-relativas-en-archivo-json" class="level2">
+<h2 class="anchored" data-anchor-id="paso-2.5---establecer-rutas-relativas-en-archivo-json">Paso 2.5 - Establecer rutas relativas en archivo JSON</h2>
+<p>Este paso intermedio es muy importante debido a que para ejecutar en positron la generación de las imágenes con sus cajas delimitadoras y los archivos .html así como las subcarpetas, es necesario cambiar las rutas absolutas del archivo .json generado a rutas relativas, donde solamente se encuentre el nombre del archivo de la imagen.</p>
+<p>Para esto, ejecutamos el siguiente código:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                 PASO INTERMEDIO: Crear un nuevo JSON con rutas relativas</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#1. Abrimos el JSON original del modelo</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(ARCHIVO_JSON, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  datos <span class="op">=</span> json.load(f)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#  Limpiamos la lista principal "images" (que es la que lee MegaDetector para visualizar)</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">"images"</span> <span class="kw">in</span> datos:</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> imagen <span class="kw">in</span> datos[<span class="st">"images"</span>]:</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> clave <span class="kw">in</span> [<span class="st">"file"</span>, <span class="st">"filepath"</span>]:</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> clave <span class="kw">in</span> imagen <span class="kw">and</span> imagen[clave]:</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extraemos solo el nombre del archivo</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        imagen[clave] <span class="op">=</span> os.path.basename(imagen[clave])</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#  Por si acaso, limpiamos también "predictions" </span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">"predictions"</span> <span class="kw">in</span> datos:</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> item <span class="kw">in</span> datos[<span class="st">"predictions"</span>]:</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> clave <span class="kw">in</span> [<span class="st">"file"</span>, <span class="st">"filepath"</span>]:</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> clave <span class="kw">in</span> item <span class="kw">and</span> item[clave]:</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>        item[clave] <span class="op">=</span> os.path.basename(item[clave])</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardamos el resultado en archivo de rutas relativas (ARCHIVO_JSON_R)</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(ARCHIVO_JSON_R, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>  json.dump(datos, f, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"✅ ¡JSON actualizado y rutas relativas listas en 'images'!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="paso-3---generación-de-imágenes-con-bbox-y-resumen-html" class="level2">
+<h2 class="anchored" data-anchor-id="paso-3---generación-de-imágenes-con-bbox-y-resumen-html">Paso 3 - Generación de imágenes con bbox y resumen HTML</h2>
+<p>Una vez modificadas las rutas absolutas, utilizaremos el nuevo objeto-archivo generado (<code>ARCHIVO_JSON_R</code>) para ejecutar la herramienta de megadetector que genera las imágenes y el resumen html:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># =======================================================================================</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                   PASO 3: GENERACIÓN DE IMÁGENES CON BBOX Y HTML</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># =======================================================================================</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">🎨 [2/3] Generando imágenes con recuadros y reporte HTML..."</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>comando_img_bbox <span class="op">=</span> [</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    sys.executable,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"-m"</span>, <span class="st">"megadetector.visualization.visualize_detector_output"</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    ARCHIVO_JSON_R,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    CARPETA_IMG,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"--images_dir"</span>, CARPETA_BRUTO, </span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"--html_output_file"</span>, ARCHIVO_HTML</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejecución de proceso discreto</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>respuesta_vis <span class="op">=</span> subprocess.run(comando_img_bbox, capture_output<span class="op">=</span><span class="va">True</span>, text<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="co"># condicionantes para la confirmación</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> respuesta_vis.returncode <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"✅ ¡Imágenes con cajas y archivo HTML generados con éxito!"</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"❌ Error detectado:</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(respuesta_vis.stderr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="paso-4---post---procesamiento-para-generación-de-subcarpetas-clasificadas-y-el-index-en-.html" class="level2">
+<h2 class="anchored" data-anchor-id="paso-4---post---procesamiento-para-generación-de-subcarpetas-clasificadas-y-el-index-en-.html">Paso 4 - Post - procesamiento para generación de subcarpetas clasificadas y el index en .html</h2>
+<p>Finalmente, como último paso al igual que con Mini Forge, generaremos las subcarpetas y el index.html con toda la información resumida. Este último bloque de código utiliza todos los objetos definidos anteriormente, así como las rutas de las subcarpetas:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rint(<span class="st">"</span><span class="ch">\n</span><span class="st">🔍 [3/3] Ejecutando post-procesamiento interactivo..."</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>comando_post <span class="op">=</span> [</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    sys.executable,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"-m"</span>, <span class="st">"megadetector.postprocessing.postprocess_batch_results"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    ARCHIVO_JSON_R,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    CARPETA_POST,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"--image_base_dir"</span>, CARPETA_BRUTO</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>respuesta_post <span class="op">=</span> subprocess.run(comando_post, capture_output<span class="op">=</span><span class="va">True</span>, text<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> respuesta_post.returncode <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"🎉 ¡PROCESO COMPLETO FINALIZADO CON ÉXITO! 🎉"</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"👉 1. Imágenes con cajas guardadas en: </span><span class="sc">{</span>CARPETA_IMG<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"👉 2. Reporte HTML simple en: </span><span class="sc">{</span>ARCHIVO_HTML<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"👉 3. Post-procesamiento interactivo (con su index.html y subcarpetas) en: </span><span class="sc">{</span>CARPETA_POST<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"❌ Error en el post-procesamiento:</span><span class="ch">\n</span><span class="st">"</span>, respuesta_post.stderr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>¡FELICIDADES! Has concluido el flujo de trabajo 🦾🤖🐆🦉🐍🧑🏻‍💻☑️</strong></p>
 <p>Nos da mucho gusto que nos hayas acompañado en este proceso, tus datos están listos para continuar con análisis ecológicos más complejos y poder compartir resultados preliminares con tus colegas, empresa o academia. Confiamos en que nuestro flujo de trabajo te ayudará a marcar una diferencia en tu desarrollo profesional y contribuirá a tomar decisiones adecuadas para la conservación de la biodiversidad 🤓</p>
 </section>
 </section>
 <section id="apóyanos" class="level1">
 <h1>APÓYANOS 🙏🏻</h1>
-<p>Si te gustó este curso, por favor sígenos en nuestras redes sociales y <a href="https://senja.io/p/megascops-consultores/r/nLJaHK">déjanos un comentario o retroalimentación</a> para mejorar nuestros cursos y hacer que cada vez más personas se interesen en estas herramientas para implementarlas en sus proyectos. Nuestra misión es clara, apoyar a cualquier persona u organización a conservar la biodiversidad desde un enfoque científico y técnico aprovechando las más actuales tecnologías 🌎🌱🦉🤖</p>
+<p>Si te gustó este curso, por favor sígenos en nuestras redes sociales como <a href="https://www.linkedin.com/in/megascops-consultores-ambientales/">LinkedIn</a> e <a href="https://www.instagram.com/megascops_consultores_a?stkn=b3k2anRmbjQ5NXZu&amp;utm_source=qr">Instagram</a> y te agradeceríamos muchísimo <a href="https://senja.io/p/megascops-consultores/r/nLJaHK">dejarnos un comentario o retroalimentación</a>con el objetivo de que podamos mejorar nuestros cursos y hacer que cada vez más personas se interesen en estas herramientas para implementarlas en sus proyectos.☺️</p>
+<p>Nuestra misión es clara, apoyar a cualquier persona u organización a conservar la biodiversidad desde un enfoque científico y técnico aprovechando las más actuales tecnologías 🌎🌱🦉🤖</p>
+<p><em>Este manual es propiedad de MEGASCOPS Consultores Ambientales y es para uso exclusivo de los participantes inscritos en el curso: Introducción al uso de R y Python para la detección automatizada de fauna en fototrampeo. Queda estrictamente prohibida su comercialización y difusión sin consentimiento o autorización de los autores.</em></p>
 </section>
 
 </main>
